@@ -85,10 +85,6 @@
 
         // load language definition
         LanguageDefinition.setActiveLanguage( ActiveOptions.MarkupType );
-        if ( EditorHas.formatSelector() ) {
-          FormatSelector.init(
-            $('#gollum-editor-format-selector select') );
-        }
 
         if ( EditorHas.help() ) {
           $('#gollum-editor-help').hide();
@@ -184,10 +180,6 @@
           // update features that rely on the language definition
           if ( EditorHas.functionBar() ) {
             FunctionBar.refresh();
-          }
-
-          if ( LanguageDefinition.isValid() && EditorHas.formatSelector() ) {
-            FormatSelector.updateSelected();
           }
 
           if(LanguageDefinition.getHookFunctionFor("activate")) {
@@ -335,18 +327,6 @@
      */
     collapsibleInputs: function() {
       return $('#gollum-editor .collapsed, #gollum-editor .expanded').length;
-    },
-
-
-    /**
-     *  EditorHas.formatSelector
-     *  True if the editor has a format selector (for switching between
-     *  language types), false otherwise.
-     *
-     *  @return boolean
-     */
-    formatSelector: function() {
-      return $('#gollum-editor-format-selector select').length;
     },
 
 
@@ -727,65 +707,6 @@
       }
    };
 
-
-
-   /**
-    *  FormatSelector
-    *
-    *  Functions relating to the format selector (if it exists)
-    */
-   var FormatSelector = {
-
-     $_SELECTOR: null,
-
-     /**
-      *  FormatSelector.evtChangeFormat
-      *  Event handler for when a format has been changed by the format
-      *  selector. Will automatically load a new language definition
-      *  via JS if necessary.
-      *
-      *  @return void
-      */
-     evtChangeFormat: function( e ) {
-       var newMarkup = $(this).val();
-       LanguageDefinition.setActiveLanguage( newMarkup );
-     },
-
-     /**
-      *  FormatSelector.init
-      *  Initializes the format selector.
-      *
-      *  @return void
-      */
-     init: function( $sel ) {
-       debug('Initializing format selector');
-
-       // unbind events if init is being called twice for some reason
-       if ( FormatSelector.$_SELECTOR &&
-            typeof FormatSelector.$_SELECTOR == 'object' ) {
-         FormatSelector.$_SELECTOR.unbind( 'change' );
-       }
-
-       FormatSelector.$_SELECTOR = $sel;
-
-       // set format selector to the current language
-       FormatSelector.updateSelected();
-       FormatSelector.$_SELECTOR.change( FormatSelector.evtChangeFormat );
-     },
-
-
-     /**
-      * FormatSelector.update
-      */
-    updateSelected: function() {
-       var currentLang = LanguageDefinition.getActiveLanguage();
-       FormatSelector.$_SELECTOR.val( currentLang );
-    }
-
-   };
-
-
-
    /**
     *  Help
     *
@@ -1030,7 +951,6 @@
         if ( $('#gollum-editor-help').length &&
              $('#gollum-editor-help').attr('data-autodisplay') !== 'undefined' &&
              $('#gollum-editor-help').attr('data-autodisplay') === 'true' ) {
-          $.post('/wiki/help?_method=delete');
           $('#gollum-editor-help').attr('data-autodisplay', '');
         }
         Help.hide(); }
