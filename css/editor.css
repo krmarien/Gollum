@@ -450,7 +450,7 @@ a#function-help:hover span { background-position: -405px -28px; }
   #gollum-editor-help-list {
     display: block;
     float: left;
-    height: 17em;
+    height: 13em;
     list-style-type: none;
     overflow: auto;
     margin: 0;
@@ -469,8 +469,8 @@ a#function-help:hover span { background-position: -405px -28px; }
 
   #gollum-editor-help-parent li,
   #gollum-editor-help-list li {
-    font-size: 1.2em;
-    line-height: 1.6em;
+    font-size: 1em;
+    line-height: 1.4em;
     margin: 0;
     padding: 0;
   }
@@ -510,15 +510,15 @@ a#function-help:hover span { background-position: -405px -28px; }
   #gollum-editor-help-wrapper {
     background: #fff;
     overflow: auto;
-    height: 17em;
+    height: 13em;
     padding: 1em;
   }
 
     #gollum-editor-help-content {
-      font-size: 1.2em;
+      font-size: 1em;
       margin: 0 1em 0 0.5em;
       padding: 0;
-      line-height: 1.8em;
+      line-height: 1.6em;
     }
 
     #gollum-editor-help-content p {

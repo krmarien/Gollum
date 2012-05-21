@@ -168,10 +168,6 @@
     },
 
     setActiveLanguage: function( name ) {
-      // On first load _ACTIVE_LANG.length is 0 and evtChangeFormat isn't called.
-      if ( LanguageDefinition._ACTIVE_LANG.length <= 0 ) {
-        FormatSelector.updateCommitMessage( name );
-      }
 
       if(LanguageDefinition.getHookFunctionFor("deactivate")) {
         LanguageDefinition.getHookFunctionFor("deactivate")();
@@ -267,7 +263,7 @@
       }
 
       // attempt to load the definition for this language
-      var script_uri = '/javascript/editor/langs/' + markup_name + '.js';
+      var script_uri = './javascript/editor/langs/' + markup_name + '.js';
       $.ajax({
                 url: script_uri,
                 dataType: 'script',
@@ -752,17 +748,7 @@
       */
      evtChangeFormat: function( e ) {
        var newMarkup = $(this).val();
-       FormatSelector.updateCommitMessage( newMarkup );
        LanguageDefinition.setActiveLanguage( newMarkup );
-     },
-
-     updateCommitMessage: function( newMarkup ) {
-       var msg = document.getElementById( "gollum-editor-message-field" );
-       var val = msg.value;
-       // Must start with created or updated.
-       if (/^(?:created|updated)/i.test(val)) {
-         msg.value = val.replace( /\([^\)]*\)$/, "(" + newMarkup + ")" );
-       }
      },
 
      /**
