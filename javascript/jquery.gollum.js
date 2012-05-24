@@ -27,26 +27,26 @@
     	    
     	    $(this).attr('data-markup-lang', 'markdown')
     	        .attr('format', 'markdown')
-    	        .wrap($('<div>', {'id': 'gollum-editor'}));
+    	        .wrap($('<div>', {'id': 'gollum-editor', 'class': 'gollum-editor'}));
 
     	    var wrapper = $('#gollum-editor');
     	        
-    	    var functionbar = $('<div>', {'id': 'gollum-editor-function-bar'});
+    	    var functionbar = $('<div>', {'id': 'gollum-editor-function-bar', 'class': 'gollum-editor-function-bar'});
     	    wrapper.prepend(functionbar);
     	    
-    	    var buttons = $('<div>', {'id': 'gollum-editor-function-buttons'});
+    	    var buttons = $('<div>', {'id': 'gollum-editor-function-buttons', 'class': 'gollum-editor-function-buttons'});
     	    functionbar.append(buttons);
     	    
     	    $.each(options.toolbar, function(key, val){
     	        if (key == 'divider')
     	            button = $('<span>', {'class': 'function-divider'}).html('&nbsp;');
     	        else
-    	            button = $('<a>', {'href': '#', 'class': 'function-button', 'id': 'function-' + val[0], 'title': val[1], 'tabindex': -1})
+    	            button = $('<a>', {'href': '#', 'class': 'function-button function-' + val[0], 'id': 'function-' + val[0], 'title': val[1], 'tabindex': -1})
     	                .append($('<span>', {'class': 'mini-icon '+val[2]}));
     	        buttons.append(button);
     	    });
     	    
-    	    functionbar.after('<div id="gollum-editor-help" class="jaws"><ul id="gollum-editor-help-parent"><li></li></ul><ul id="gollum-editor-help-list"><li></li></ul><div id="gollum-editor-help-wrapper"><div id="gollum-editor-help-content"><p></p></div></div></div>');
+    	    functionbar.after('<div id="gollum-editor-help" class="gollum-editor-help" class="jaws"><ul id="gollum-editor-help-parent" class="gollum-editor-help-parent"><li></li></ul><ul id="gollum-editor-help-list" class="gollum-editor-help-list"><li></li></ul><div id="gollum-editor-help-wrapper" class="gollum-editor-help-wrapper"><div id="gollum-editor-help-content" class="gollum-editor-help-content"><p></p></div></div></div>');
     	           
 
     	    $.GollumEditor();

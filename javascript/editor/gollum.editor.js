@@ -30,15 +30,6 @@
 
     if ( EditorHas.baseEditorMarkup() ) {
 
-      if ( EditorHas.collapsibleInputs() ) {
-        $('#gollum-editor .collapsed a.button, ' +
-          '#gollum-editor .expanded a.button').click(function( e ) {
-          e.preventDefault();
-          $(this).parent().toggleClass('expanded');
-          $(this).parent().toggleClass('collapsed');
-        });
-      }
-
       // Initialize the function bar by loading proper definitions
       if ( EditorHas.functionBar() ) {
 
@@ -135,23 +126,7 @@
         LanguageDefinition.getHookFunctionFor("deactivate")();
       }
       if ( !LanguageDefinition.isLoadedFor(name) ) {
-        LanguageDefinition._ACTIVE_LANG = null;
-        LanguageDefinition.loadFor( name, function(x, t) {
-          if ( t != 'success' ) {
-            debug('Failed to load language definition for ' + name);
-            // well, fake it and turn everything off for this one
-            LanguageDefinition.define( name, {} );
-          }
-
-          // update features that rely on the language definition
-          if ( EditorHas.functionBar() ) {
-            FunctionBar.refresh();
-          }
-
-          if(LanguageDefinition.getHookFunctionFor("activate")) {
-            LanguageDefinition.getHookFunctionFor("activate")();
-          }
-        } );
+        debug('Failed to load language definition for ' + name);
       } else {
         LanguageDefinition._ACTIVE_LANG = name;
         FunctionBar.refresh();
@@ -195,42 +170,6 @@
       }
 
       return null;
-    },
-
-
-    /**
-     *  loadFor
-     *  Asynchronously loads a definition file for the current markup.
-     *  Definition files are necessary to use the code editor.
-     *
-     *  @param  string  markup_name  The markup name you want to load
-     *  @return void
-     */
-    loadFor: function( markup_name, on_complete ) {
-      // Keep us from hitting 404s on our site, check the definition blacklist
-      if ( ActiveOptions.NoDefinitionsFor.length ) {
-        for ( var i=0; i < ActiveOptions.NoDefinitionsFor.length; i++ ) {
-          if ( markup_name == ActiveOptions.NoDefinitionsFor[i] ) {
-            // we don't have this. get out.
-            if ( typeof on_complete == 'function' ) {
-              on_complete( null, 'error' );
-              return;
-            }
-          }
-        }
-      }
-
-      // attempt to load the definition for this language
-      var script_uri = './javascript/editor/langs/' + markup_name + '.js';
-      $.ajax({
-                url: script_uri,
-                dataType: 'script',
-                complete: function( xhr, textStatus ) {
-                  if ( typeof on_complete == 'function' ) {
-                    on_complete( xhr, textStatus );
-                  }
-                }
-            });
     },
 
 
@@ -281,18 +220,6 @@
     baseEditorMarkup: function() {
       return ( $('#gollum-editor').length &&
                $('#gollum-editor-body').length );
-    },
-
-
-    /**
-     *  EditorHas.collapsibleInputs
-     *  True if the editor contains collapsible inputs for things like the
-     *  sidebar or footer, false otherwise.
-     *
-     *  @return boolean
-     */
-    collapsibleInputs: function() {
-      return $('#gollum-editor .collapsed, #gollum-editor .expanded').length;
     },
 
 
