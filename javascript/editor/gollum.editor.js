@@ -12,7 +12,7 @@
     MarkupType: 'markdown',
     EditorMode: 'code',
     HasFunctionBar: true,
-    Debug: true,
+    Debug: false,
     NoDefinitionsFor: []
   };
   var ActiveOptions = {};
