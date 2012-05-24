@@ -11,7 +11,6 @@
   var DefaultOptions = {
     MarkupType: 'markdown',
     EditorMode: 'code',
-    NewFile: false,
     HasFunctionBar: true,
     Debug: true,
     NoDefinitionsFor: []
@@ -31,45 +30,12 @@
 
     if ( EditorHas.baseEditorMarkup() ) {
 
-      if ( EditorHas.titleDisplayed() ) {
-        $('#gollum-editor-title-field').addClass('active');
-      }
-
-      if ( EditorHas.editSummaryMarkup() ) {
-        $.GollumEditor.Placeholder.add($('#gollum-editor-edit-summary input'));
-        $('#gollum-editor form[name="gollum-editor"]').submit(function( e ) {
-          e.preventDefault();
-          $.GollumEditor.Placeholder.clearAll();
-          debug('submitting');
-          $(this).unbind('submit');
-          $(this).submit();
-        });
-      }
-
       if ( EditorHas.collapsibleInputs() ) {
         $('#gollum-editor .collapsed a.button, ' +
           '#gollum-editor .expanded a.button').click(function( e ) {
           e.preventDefault();
           $(this).parent().toggleClass('expanded');
           $(this).parent().toggleClass('collapsed');
-        });
-      }
-
-      if ( EditorHas.previewButton() ) {
-        var formAction =
-        $('#gollum-editor #gollum-editor-preview').click(function() {
-          // make a dummy form, submit to new target window
-          // get form fields
-          var oldAction = $('#gollum-editor form').attr('action');
-          var $form = $($('#gollum-editor form').get(0));
-          $form.attr('action', this.href || '/preview');
-          $form.attr('target', '_blank');
-          $form.submit();
-
-
-          $form.attr('action', oldAction);
-          $form.removeAttr('target');
-          return false;
         });
       }
 
@@ -343,30 +309,6 @@
 
 
     /**
-     *  EditorHas.ff4Environment
-     *  True if in a Firefox 4.0 Beta environment.
-     *
-     *  @return boolean
-     */
-    ff4Environment: function() {
-      var ua = new RegExp(/Firefox\/4.0b/);
-      return ( ua.test( navigator.userAgent ) );
-    },
-
-
-    /**
-     *  EditorHas.editSummaryMarkup
-     *  True if the editor has a summary field (Gollum's commit message),
-     *  false otherwise.
-     *
-     *  @return boolean
-     */
-    editSummaryMarkup: function() {
-      return ( $('input#gollum-editor-message-field').length > 0 );
-    },
-
-
-    /**
      *  EditorHas.help
      *  True if the editor contains the inline help sector, false otherwise.
      *
@@ -376,28 +318,6 @@
       return ( $('#gollum-editor #gollum-editor-help').length &&
                $('#gollum-editor #function-help').length );
     },
-
-
-    /**
-     *  EditorHas.previewButton
-     *  True if the editor has a preview button, false otherwise.
-     *
-     *  @return boolean
-     */
-    previewButton: function() {
-      return ( $('#gollum-editor #gollum-editor-preview').length );
-    },
-
-
-    /**
-     *  EditorHas.titleDisplayed
-     *  True if the editor is displaying a title field, false otherwise.
-     *
-     *  @return boolean
-     */
-    titleDisplayed: function() {
-      return ( ActiveOptions.NewFile );
-    }
 
   };
 
