@@ -5,6 +5,7 @@
 
 a {
   -moz-outline: none !important;
+  outline: none !important;
 }
 
 .jaws {

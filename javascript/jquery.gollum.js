@@ -5,6 +5,7 @@
     
     var methods = {
     	init : function (options) {
+    	    $.GollumEditor();
     		return this;
     	}
     };
