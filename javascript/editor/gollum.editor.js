@@ -10,10 +10,8 @@
   // Editor options
   var DefaultOptions = {
     MarkupType: 'markdown',
-    EditorMode: 'code',
     HasFunctionBar: true,
     Debug: false,
-    NoDefinitionsFor: []
   };
   var ActiveOptions = {};
 
@@ -33,19 +31,11 @@
       // Initialize the function bar by loading proper definitions
       if ( EditorHas.functionBar() ) {
 
-        var htmlSetMarkupLang =
-          $('#gollum-editor-body').attr('data-markup-lang');
-
-        if ( htmlSetMarkupLang ) {
-          ActiveOptions.MarkupType = htmlSetMarkupLang;
-        }
-
         // load language definition
         LanguageDefinition.setActiveLanguage( ActiveOptions.MarkupType );
 
         if ( EditorHas.help() ) {
           $('#gollum-editor-help').hide();
-          $('#gollum-editor-help').removeClass('jaws');
         }
 
       }
@@ -856,8 +846,5 @@
   $.GollumEditor.replaceSelection = function( repText ) {
     FunctionBar.replaceFieldSelection( $('#gollum-editor-body'), repText );
   };
-
-  // Placeholder exists as its own thing now
-  $.GollumEditor.Placeholder = $.GollumPlaceholder;
 
 })(jQuery);

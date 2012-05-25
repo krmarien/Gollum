@@ -25,8 +25,7 @@
     	init : function (options) {
     	    options = $.extend(defaults, options);
     	    
-    	    $(this).attr('data-markup-lang', 'markdown')
-    	        .attr('format', 'markdown')
+    	    $(this).attr('format', 'markdown')
     	        .wrap($('<div>', {'id': 'gollum-editor', 'class': 'gollum-editor'}));
 
     	    var wrapper = $('#gollum-editor');
@@ -46,7 +45,7 @@
     	        buttons.append(button);
     	    });
     	    
-    	    functionbar.after('<div id="gollum-editor-help" class="gollum-editor-help" class="jaws"><ul id="gollum-editor-help-parent" class="gollum-editor-help-parent"><li></li></ul><ul id="gollum-editor-help-list" class="gollum-editor-help-list"><li></li></ul><div id="gollum-editor-help-wrapper" class="gollum-editor-help-wrapper"><div id="gollum-editor-help-content" class="gollum-editor-help-content"><p></p></div></div></div>');
+    	    functionbar.after('<div id="gollum-editor-help" class="gollum-editor-help"><ul id="gollum-editor-help-parent" class="gollum-editor-help-parent"><li></li></ul><ul id="gollum-editor-help-list" class="gollum-editor-help-list"><li></li></ul><div id="gollum-editor-help-wrapper" class="gollum-editor-help-wrapper"><div id="gollum-editor-help-content" class="gollum-editor-help-content"><p></p></div></div></div>');
     	           
 
     	    $.GollumEditor();
