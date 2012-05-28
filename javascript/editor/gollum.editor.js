@@ -8,47 +8,45 @@
 (function($) {
 
   // Editor options
-  var DefaultOptions = {
-    MarkupType: 'markdown',
-    HasFunctionBar: true,
+  var defaults = {
+    markupType: 'markdown',
+    hasFunctionBar: true,
   };
-  var ActiveOptions = {};
 
   /**
    *  $.GollumEditor
    *
    *  You don't need to do anything. Just run this on DOM ready.
    */
-  $.GollumEditor = function( IncomingOptions ) {
+  $.fn.GollumEditor = function(options) {
+    var options = $.extend(defaults, options);
+    $(this).data('options', options);
 
-    ActiveOptions = $.extend( DefaultOptions, IncomingOptions );
-
-    if ( EditorHas.baseEditorMarkup() ) {
-
+    if (EditorHas.baseEditorMarkup()) {
       // Initialize the function bar by loading proper definitions
-      if ( EditorHas.functionBar() ) {
-
+      if (EditorHas.functionBar()) {
         // load language definition
-        LanguageDefinition.setActiveLanguage( ActiveOptions.MarkupType );
+        LanguageDefinition.setActiveLanguage(options.markupType);
 
-        if ( EditorHas.help() ) {
+        if (EditorHas.help()) {
           $('#gollum-editor-help').hide();
         }
-
       }
       // EditorHas.functionBar
     }
     // EditorHas.baseEditorMarkup
   };
+  
+  $.GollumEditor = function () {};
 
   /**
    *  $.GollumEditor.defineLanguage
    *  Defines a set of language actions that Gollum can use.
    *  Used by the definitions in langs/ to register language definitions.
    */
-  $.GollumEditor.defineLanguage = function( language_name, languageObject ) {
-    if ( typeof languageObject == 'object' ) {
-      LanguageDefinition.define( language_name, languageObject );
+  $.GollumEditor.defineLanguage = function(language_name, languageObject) {
+    if (typeof languageObject == 'object') {
+      LanguageDefinition.define(language_name, languageObject);
     }
   };
 
@@ -71,10 +69,10 @@
      *  @param name string  The name of the language
      *  @param name object  The definition object
      */
-    define: function( name, definitionObject ) {
+    define: function(name, definitionObject) {
       LanguageDefinition._ACTIVE_LANG = name;
-      LanguageDefinition._LOADED_LANGS.push( name );
-      if ( typeof $.GollumEditor.WikiLanguage == 'object' ) {
+      LanguageDefinition._LOADED_LANGS.push(name);
+      if (typeof $.GollumEditor.WikiLanguage == 'object') {
         var definition = {};
         $.extend(definition, $.GollumEditor.WikiLanguage, definitionObject);
         LanguageDefinition._LANG[name] = definition;
@@ -87,12 +85,12 @@
       return LanguageDefinition._ACTIVE_LANG;
     },
 
-    setActiveLanguage: function( name ) {
+    setActiveLanguage: function(name) {
 
       if(LanguageDefinition.getHookFunctionFor("deactivate")) {
         LanguageDefinition.getHookFunctionFor("deactivate")();
       }
-      if ( LanguageDefinition.isLoadedFor(name) ) {
+      if (LanguageDefinition.isLoadedFor(name)) {
         LanguageDefinition._ACTIVE_LANG = name;
         FunctionBar.refresh();
 
@@ -103,13 +101,13 @@
     },
 
     getHookFunctionFor: function(attr, specified_lang) {
-      if ( !specified_lang ) {
+      if (!specified_lang) {
         specified_lang = LanguageDefinition._ACTIVE_LANG;
       }
 
-      if ( LanguageDefinition.isLoadedFor(specified_lang) &&
+      if (LanguageDefinition.isLoadedFor(specified_lang) &&
            LanguageDefinition._LANG[specified_lang][attr] &&
-           typeof LanguageDefinition._LANG[specified_lang][attr] == 'function' ) {
+           typeof LanguageDefinition._LANG[specified_lang][attr] == 'function') {
         return LanguageDefinition._LANG[specified_lang][attr];
       }
 
@@ -123,14 +121,14 @@
      *  @param  string  specified_lang  The language to pull a definition for.
      *  @return object if exists, null otherwise
      */
-    getDefinitionFor: function( attr, specified_lang ) {
-      if ( !specified_lang ) {
+    getDefinitionFor: function(attr, specified_lang) {
+      if (!specified_lang) {
         specified_lang = LanguageDefinition._ACTIVE_LANG;
       }
 
-      if ( LanguageDefinition.isLoadedFor(specified_lang) &&
+      if (LanguageDefinition.isLoadedFor(specified_lang) &&
            LanguageDefinition._LANG[specified_lang][attr] &&
-           typeof LanguageDefinition._LANG[specified_lang][attr] == 'object' ) {
+           typeof LanguageDefinition._LANG[specified_lang][attr] == 'object') {
         return LanguageDefinition._LANG[specified_lang][attr];
       }
 
@@ -146,13 +144,13 @@
      *  @param  string  markup_name   The name of the markup.
      *  @return boolean
      */
-    isLoadedFor: function( markup_name ) {
-      if ( LanguageDefinition._LOADED_LANGS.length === 0 ) {
+    isLoadedFor: function(markup_name) {
+      if (LanguageDefinition._LOADED_LANGS.length === 0) {
         return false;
       }
 
-      for ( var i=0; i < LanguageDefinition._LOADED_LANGS.length; i++ ) {
-        if ( LanguageDefinition._LOADED_LANGS[i] == markup_name ) {
+      for (var i=0 ; i < LanguageDefinition._LOADED_LANGS.length ; i++) {
+        if (LanguageDefinition._LOADED_LANGS[i] == markup_name) {
           return true;
         }
       }
@@ -160,9 +158,9 @@
     },
 
     isValid: function() {
-      return ( LanguageDefinition._ACTIVE_LANG &&
+      return (LanguageDefinition._ACTIVE_LANG &&
                typeof LanguageDefinition._LANG[LanguageDefinition._ACTIVE_LANG] ==
-               'object' );
+               'object');
     }
 
   };
@@ -174,8 +172,6 @@
    *  active/operational.
    */
   var EditorHas = {
-
-
     /**
      *  EditorHas.baseEditorMarkup
      *  True if the basic editor form is in place.
@@ -183,10 +179,9 @@
      *  @return boolean
      */
     baseEditorMarkup: function() {
-      return ( $('#gollum-editor').length &&
-               $('#gollum-editor-body').length );
+      return ($('#gollum-editor').length &&
+               $('#gollum-editor-body').length);
     },
-
 
     /**
      *  EditorHas.functionBar
@@ -195,10 +190,9 @@
      *  @return boolean
      */
     functionBar: function() {
-      return ( ActiveOptions.HasFunctionBar &&
-               $('#gollum-editor-function-bar').length );
+      return ($('#gollum-editor-body').data('options').hasFunctionBar &&
+               $('#gollum-editor-function-bar').length);
     },
-
 
     /**
      *  EditorHas.help
@@ -207,8 +201,8 @@
      *  @return boolean
      */
     help: function() {
-      return ( $('#gollum-editor #gollum-editor-help').length &&
-               $('#gollum-editor #function-help').length );
+      return ($('#gollum-editor #gollum-editor-help').length &&
+               $('#gollum-editor #function-help').length);
     },
 
   };
@@ -220,7 +214,6 @@
    *  Things the function bar does.
    */
    var FunctionBar = {
-
       isActive: false,
 
       /**
@@ -232,24 +225,24 @@
       activate: function() {
         // check these out
         $('#gollum-editor-function-bar a.function-button').each(function() {
-          if ( LanguageDefinition.getDefinitionFor( $(this).attr('id') ) ) {
-            $(this).click( FunctionBar.evtFunctionButtonClick );
+          if (LanguageDefinition.getDefinitionFor($(this).attr('id'))) {
+            $(this).click(FunctionBar.evtFunctionButtonClick);
             $(this).removeClass('disabled');
           }
-          else if ( $(this).attr('id') != 'function-help' ) {
+          else if ($(this).attr('id') != 'function-help') {
             $(this).addClass('disabled');
           }
         });
 
         // show bar as active
-        $('#gollum-editor-function-bar').addClass( 'active' );
+        $('#gollum-editor-function-bar').addClass('active');
         FunctionBar.isActive = true;
       },
 
 
       deactivate: function() {
         $('#gollum-editor-function-bar a.function-button').unbind('click');
-        $('#gollum-editor-function-bar').removeClass( 'active' );
+        $('#gollum-editor-function-bar').removeClass('active');
         FunctionBar.isActive = false;
       },
 
@@ -263,9 +256,9 @@
        */
       evtFunctionButtonClick: function(e) {
         e.preventDefault();
-        var def = LanguageDefinition.getDefinitionFor( $(this).attr('id') );
-        if ( typeof def == 'object' ) {
-          FunctionBar.executeAction( def );
+        var def = LanguageDefinition.getDefinitionFor($(this).attr('id'));
+        if (typeof def == 'object') {
+          FunctionBar.executeAction(def);
         }
       },
 
@@ -275,68 +268,67 @@
        *  Executes a language-specific defined action for a function button.
        *
        */
-      executeAction: function( definitionObject ) {
+      executeAction: function(definitionObject) {
         // get the selected text from the textarea
         var txt = $('#gollum-editor-body').val();
         // hmm, I'm not sure this will work in a textarea
         var selPos = FunctionBar
-                      .getFieldSelectionPosition( $('#gollum-editor-body') );
-        var selText = FunctionBar.getFieldSelection( $('#gollum-editor-body') );
+                      .getFieldSelectionPosition($('#gollum-editor-body'));
+        var selText = FunctionBar.getFieldSelection($('#gollum-editor-body'));
         var repText = selText;
         var reselect = true;
         var cursor = null;
 
         // execute a replacement function if one exists
-        if ( definitionObject.exec &&
-             typeof definitionObject.exec == 'function' ) {
-          definitionObject.exec( txt, selText, $('#gollum-editor-body') );
+        if (definitionObject.exec &&
+             typeof definitionObject.exec == 'function') {
+          definitionObject.exec(txt, selText, $('#gollum-editor-body'));
           return;
         }
 
         // execute a search/replace if they exist
         var searchExp = /([^\n]+)/gi;
-        if ( definitionObject.search &&
-             typeof definitionObject.search == 'object' ) {
+        if (definitionObject.search &&
+             typeof definitionObject.search == 'object') {
           searchExp = null;
-          searchExp = new RegExp ( definitionObject.search );
+          searchExp = new RegExp(definitionObject.search);
         }
         // replace text
-        if ( definitionObject.replace &&
-             typeof definitionObject.replace == 'string' ) {
+        if (definitionObject.replace &&
+             typeof definitionObject.replace == 'string') {
           var rt = definitionObject.replace;
-          repText = repText.replace( searchExp, rt );
+          repText = repText.replace(searchExp, rt);
           // remove backreferences
-          repText = repText.replace( /\$[\d]/g, '' );
+          repText = repText.replace(/\$[\d]/g, '');
 
-          if ( repText === '' ) {
+          if (repText === '') {
             // find position of $1 - this is where we will place the cursor
             cursor = rt.indexOf('$1');
 
             // we have an empty string, so just remove backreferences
-            repText = rt.replace( /\$[\d]/g, '' );
+            repText = rt.replace(/\$[\d]/g, '');
 
             // if the position of $1 doesn't exist, stick the cursor in
             // the middle
-            if ( cursor == -1 ) {
-              cursor = Math.floor( rt.length / 2 );
+            if (cursor == -1) {
+              cursor = Math.floor(rt.length / 2);
             }
           }
         }
 
         // append if necessary
-        if ( definitionObject.append &&
-             typeof definitionObject.append == 'string' ) {
-          if ( repText == selText ) {
+        if (definitionObject.append &&
+             typeof definitionObject.append == 'string') {
+          if (repText == selText) {
             reselect = false;
           }
           repText += definitionObject.append;
         }
 
-        if ( repText ) {
-          FunctionBar.replaceFieldSelection( $('#gollum-editor-body'),
-                                             repText, reselect, cursor );
+        if (repText) {
+          FunctionBar.replaceFieldSelection($('#gollum-editor-body'),
+                                             repText, reselect, cursor);
         }
-
       },
 
 
@@ -346,7 +338,7 @@
        *
        *  @return object the .start and .end offsets in the string
        */
-      getFieldSelectionPosition: function( $field ) {
+      getFieldSelectionPosition: function($field) {
         if ($field.length) {
           var start = 0, end = 0;
           var el = $field.get(0);
@@ -358,8 +350,8 @@
           } else {
             var range = document.selection.createRange();
             var stored_range = range.duplicate();
-            stored_range.moveToElementText( el );
-            stored_range.setEndPoint( 'EndToEnd', range );
+            stored_range.moveToElementText(el);
+            stored_range.setEndPoint('EndToEnd', range);
             start = stored_range.text.length - range.text.length;
             end = start + range.text.length;
 
@@ -369,25 +361,25 @@
             var s = start;
             var lb = 0;
             var i;
-            for ( i=0; i < s; i++ ) {
-              if ( el.value.charAt(i).match(/\r/) ) {
+            for (i=0 ; i < s ; i++) {
+              if (el.value.charAt(i).match(/\r/)) {
                 ++lb;
               }
             }
 
-            if ( lb ) {
+            if (lb) {
               start = start - lb;
               lb = 0;
             }
 
             var e = end;
-            for ( i=0; i < e; i++ ) {
-              if ( el.value.charAt(i).match(/\r/) ) {
+            for (i=0 ; i < e ; i++) {
+              if (el.value.charAt(i).match(/\r/)) {
                 ++lb;
               }
             }
 
-            if ( lb ) {
+            if (lb) {
               end = end - lb;
             }
           }
@@ -407,13 +399,13 @@
        *  @param  jQuery  A jQuery object for the textarea.
        *  @return string  Selected string.
        */
-      getFieldSelection: function( $field ) {
+      getFieldSelection: function($field) {
         var selStr = '';
         var selPos;
 
-        if ( $field.length ) {
-          selPos = FunctionBar.getFieldSelectionPosition( $field );
-          selStr = $field.val().substring( selPos.start, selPos.end );
+        if ($field.length) {
+          selPos = FunctionBar.getFieldSelectionPosition($field);
+          selStr = $field.val().substring(selPos.start, selPos.end);
           return selStr;
         }
         return false;
@@ -425,19 +417,19 @@
       },
 
       refresh: function() {
-        if ( EditorHas.functionBar() ) {
-          if ( LanguageDefinition.isValid() ) {
+        if (EditorHas.functionBar()) {
+          if (LanguageDefinition.isValid()) {
             $('#gollum-editor-function-bar a.function-button').unbind('click');
             FunctionBar.activate();
-            if ( Help ) {
-              Help.setActiveHelp( LanguageDefinition.getActiveLanguage() );
+            if (Help) {
+              Help.setActiveHelp(LanguageDefinition.getActiveLanguage());
             }
           } else {
-            if ( FunctionBar.isShown() ) {
+            if (FunctionBar.isShown()) {
               // deactivate the function bar; it's not gonna work now
               FunctionBar.deactivate();
             }
-            if ( Help.isShown() ) {
+            if (Help.isShown()) {
               Help.hide();
             }
           }
@@ -454,49 +446,45 @@
        *  @param  string  The string to replace the current selection with.
        *  @param  boolean Reselect the new text range.
        */
-      replaceFieldSelection: function( $field, replaceText, reselect, cursorOffset ) {
-        var selPos = FunctionBar.getFieldSelectionPosition( $field );
+      replaceFieldSelection: function($field, replaceText, reselect, cursorOffset) {
+        var selPos = FunctionBar.getFieldSelectionPosition($field);
         var fullStr = $field.val();
         var selectNew = true;
-        if ( reselect === false) {
+        if (reselect === false) {
           selectNew = false;
         }
 
         var scrollTop = null;
-        if ( $field[0].scrollTop ) {
+        if ($field[0].scrollTop) {
           scrollTop = $field[0].scrollTop;
         }
 
-        $field.val( fullStr.substring(0, selPos.start) + replaceText +
-                    fullStr.substring(selPos.end) );
+        $field.val(fullStr.substring(0, selPos.start) + replaceText +
+                    fullStr.substring(selPos.end));
         $field[0].focus();
 
-        if ( selectNew ) {
-          if ( $field[0].setSelectionRange ) {
-            if ( cursorOffset ) {
-              $field[0].setSelectionRange(
-                                            selPos.start + cursorOffset,
-                                            selPos.start + cursorOffset
-               );
+        if (selectNew) {
+          if ($field[0].setSelectionRange) {
+            if (cursorOffset) {
+              $field[0].setSelectionRange(selPos.start + cursorOffset, selPos.start + cursorOffset);
             } else {
-              $field[0].setSelectionRange( selPos.start,
-                                           selPos.start + replaceText.length );
+              $field[0].setSelectionRange(selPos.start, selPos.start + replaceText.length);
             }
-          } else if ( $field[0].createTextRange ) {
+          } else if ($field[0].createTextRange) {
             var range = $field[0].createTextRange();
-            range.collapse( true );
-            if ( cursorOffset ) {
-              range.moveEnd( selPos.start + cursorOffset );
-              range.moveStart( selPos.start + cursorOffset );
+            range.collapse(true);
+            if (cursorOffset) {
+              range.moveEnd(selPos.start + cursorOffset);
+              range.moveStart(selPos.start + cursorOffset);
             } else {
-              range.moveEnd( 'character', selPos.start + replaceText.length );
-              range.moveStart( 'character', selPos.start );
+              range.moveEnd('character', selPos.start + replaceText.length);
+              range.moveStart('character', selPos.start);
             }
             range.select();
           }
         }
 
-        if ( scrollTop ) {
+        if (scrollTop) {
           // this jumps sometimes in FF
           $field[0].scrollTop = scrollTop;
         }
@@ -509,7 +497,6 @@
     *  Functions that manage the display and loading of inline help files.
     */
   var Help = {
-
     _ACTIVE_HELP: '',
     _LOADED_HELP_LANGS: [],
     _HELP: {},
@@ -526,30 +513,30 @@
      *                                 language / help definition file.
      *  @return void
      */
-    define: function( name, definitionObject ) {
-      if ( Help.isValidHelpFormat( definitionObject ) ) {
+    define: function(name, definitionObject) {
+      if (Help.isValidHelpFormat(definitionObject)) {
         Help._ACTIVE_HELP_LANG = name;
-        Help._LOADED_HELP_LANGS.push( name );
+        Help._LOADED_HELP_LANGS.push(name);
         Help._HELP[name] = definitionObject;
 
-        if ( $("#function-help").length ) {
-          if ( $('#function-help').hasClass('disabled') ) {
+        if ($("#function-help").length) {
+          if ($('#function-help').hasClass('disabled')) {
             $('#function-help').removeClass('disabled');
           }
           $('#function-help').unbind('click');
-          $('#function-help').click( Help.evtHelpButtonClick );
+          $('#function-help').click(Help.evtHelpButtonClick);
 
           // generate help menus
-          Help.generateHelpMenuFor( name );
+          Help.generateHelpMenuFor(name);
 
-          if ( $('#gollum-editor-help').length &&
+          if ($('#gollum-editor-help').length &&
                typeof $('#gollum-editor-help').attr('data-autodisplay') !== 'undefined' &&
-               $('#gollum-editor-help').attr('data-autodisplay') === 'true' ) {
+               $('#gollum-editor-help').attr('data-autodisplay') === 'true') {
             Help.show();
           }
         }
       } else {
-        if ( $('#function-help').length ) {
+        if ($('#function-help').length) {
           $('#function-help').addClass('disabled');
         }
       }
@@ -562,8 +549,8 @@
      *  @param string  name  The context name.
      *  @return void
      */
-    generateHelpMenuFor: function( name ) {
-      if ( !Help._HELP[name] ) {
+    generateHelpMenuFor: function(name) {
+      if (!Help._HELP[name]) {
         return false;
       }
       var helpData = Help._HELP[name];
@@ -574,23 +561,23 @@
       $('#gollum-editor-help-content').html('');
 
       // go go inefficient algorithm
-      for ( var i=0; i < helpData.length; i++ ) {
-        if ( typeof helpData[i] != 'object' ) {
+      for (var i=0 ; i < helpData.length ; i++) {
+        if (typeof helpData[i] != 'object') {
           break;
         }
 
         var $newLi = $('<li><a href="#" rel="' + i + '">' +
                        helpData[i].menuName + '</a></li>');
-        $('#gollum-editor-help-parent').append( $newLi );
-        if ( i === 0 ) {
+        $('#gollum-editor-help-parent').append($newLi);
+        if (i === 0) {
           // select on first run
           $newLi.children('a').addClass('selected');
         }
-        $newLi.children('a').click( Help.evtParentMenuClick );
+        $newLi.children('a').click(Help.evtParentMenuClick);
       }
 
       // generate parent submenu on first run
-      Help.generateSubMenu( helpData[0], 0 );
+      Help.generateSubMenu(helpData[0], 0);
       $($('#gollum-editor-help-list li a').get(0)).click();
 
     },
@@ -604,25 +591,24 @@
      *  @param integer index  The index clicked on (parent menu index).
      *  @return void
      */
-    generateSubMenu: function( subData, index ) {
+    generateSubMenu: function(subData, index) {
       $('#gollum-editor-help-list').html('');
       $('#gollum-editor-help-content').html('');
-      for ( var i=0; i < subData.content.length; i++ ) {
-        if ( typeof subData.content[i] != 'object' ) {
+      for (var i=0 ; i < subData.content.length ; i++) {
+        if (typeof subData.content[i] != 'object') {
           break;
         }
 
         var $subLi = $('<li><a href="#" rel="' + index + ':' + i + '">' +
                        subData.content[i].menuName + '</a></li>');
 
-
-        $('#gollum-editor-help-list').append( $subLi );
-        $subLi.children('a').click( Help.evtSubMenuClick );
+        $('#gollum-editor-help-list').append($subLi);
+        $subLi.children('a').click(Help.evtSubMenuClick);
       }
     },
 
     hide: function() {
-      if ( $.browser.msie ) {
+      if ($.browser.msie) {
         $('#gollum-editor-help').css('display', 'none');
       } else {
         $('#gollum-editor-help').animate({
@@ -635,7 +621,7 @@
     },
 
     show: function() {
-      if ( $.browser.msie ) {
+      if ($.browser.msie) {
         // bypass effects for internet explorer, since it does weird crap
         // to text antialiasing with opacity animations
         $('#gollum-editor-help').css('display', 'block');
@@ -658,7 +644,7 @@
      *  @param integer index2  submenu index
      *  @return void
      */
-    showHelpFor: function( index1, index2 ) {
+    showHelpFor: function(index1, index2) {
       var html =
         Help._HELP[Help._ACTIVE_HELP_LANG][index1].content[index2].data;
       $('#gollum-editor-help-content').html(html);
@@ -672,9 +658,9 @@
      *  @param string name   The name of the markup language.
      *  @return boolean
      */
-    isLoadedFor: function( name ) {
-      for ( var i=0; i < Help._LOADED_HELP_LANGS.length; i++ ) {
-        if ( name == Help._LOADED_HELP_LANGS[i] ) {
+    isLoadedFor: function(name) {
+      for (var i=0 ; i < Help._LOADED_HELP_LANGS.length ; i++) {
+        if (name == Help._LOADED_HELP_LANGS[i]) {
           return true;
         }
       }
@@ -693,12 +679,12 @@
      *  @param object (Array) helpArr  The help definition array.
      *  @return boolean
      */
-    isValidHelpFormat: function( helpArr ) {
-      return ( typeof helpArr == 'object' &&
+    isValidHelpFormat: function(helpArr) {
+      return (typeof helpArr == 'object' &&
                helpArr.length &&
                typeof helpArr[0].menuName == 'string' &&
                typeof helpArr[0].content == 'object' &&
-               helpArr[0].content.length );
+               helpArr[0].content.length);
     },
 
     /**
@@ -709,23 +695,23 @@
      *  @param string  name  The name of the help definition.
      *  @return void
      */
-    setActiveHelp: function( name ) {
-      if ( !Help.isLoadedFor( name ) ) {
-        if ( $('#function-help').length ) {
+    setActiveHelp: function(name) {
+      if (!Help.isLoadedFor(name)) {
+        if ($('#function-help').length) {
           $('#function-help').addClass('disabled');
         }
-        if ( Help.isShown() ) {
+        if (Help.isShown()) {
           Help.hide();
         }
       } else {
         Help._ACTIVE_HELP_LANG = name;
-        if ( $("#function-help").length ) {
-          if ( $('#function-help').hasClass('disabled') ) {
+        if ($("#function-help").length) {
+          if ($('#function-help').hasClass('disabled')) {
             $('#function-help').removeClass('disabled');
           }
           $('#function-help').unbind('click');
-          $('#function-help').click( Help.evtHelpButtonClick );
-          Help.generateHelpMenuFor( name );
+          $('#function-help').click(Help.evtHelpButtonClick);
+          Help.generateHelpMenuFor(name);
         }
       }
     },
@@ -737,13 +723,13 @@
      *  @param jQuery.Event e  The jQuery event object.
      *  @return void
      */
-    evtHelpButtonClick: function( e ) {
+    evtHelpButtonClick: function(e) {
       e.preventDefault();
-      if ( Help.isShown() ) {
+      if (Help.isShown()) {
         // turn off autodisplay if it's on
-        if ( $('#gollum-editor-help').length &&
+        if ($('#gollum-editor-help').length &&
              $('#gollum-editor-help').attr('data-autodisplay') !== 'undefined' &&
-             $('#gollum-editor-help').attr('data-autodisplay') === 'true' ) {
+             $('#gollum-editor-help').attr('data-autodisplay') === 'true') {
           $('#gollum-editor-help').attr('data-autodisplay', '');
         }
         Help.hide(); }
@@ -759,10 +745,10 @@
      *  @param jQuery.Event e  The jQuery event object.
      *  @return void
      */
-    evtParentMenuClick: function( e ) {
+    evtParentMenuClick: function(e) {
       e.preventDefault();
       // short circuit if we've selected this already
-      if ( $(this).hasClass('selected') ) { return; }
+      if ($(this).hasClass('selected')) { return; }
 
       // populate from help data for this
       var helpIndex = $(this).attr('rel');
@@ -770,7 +756,7 @@
 
       $('#gollum-editor-help-parent li a').removeClass('selected');
       $(this).addClass('selected');
-      Help.generateSubMenu( subData, helpIndex );
+      Help.generateSubMenu(subData, helpIndex);
       $($('#gollum-editor-help-list li a').get(0)).click();
     },
 
@@ -782,15 +768,15 @@
      *  @param jQuery.Event e  The jQuery event object.
      *  @return void
      */
-    evtSubMenuClick: function( e ) {
+    evtSubMenuClick: function(e) {
       e.preventDefault();
-      if ( $(this).hasClass('selected') ) { return; }
+      if ($(this).hasClass('selected')) { return; }
 
       // split index rel data
       var rawIndex = $(this).attr('rel').split(':');
       $('#gollum-editor-help-list li a').removeClass('selected');
       $(this).addClass('selected');
-      Help.showHelpFor( rawIndex[0], rawIndex[1] );
+      Help.showHelpFor(rawIndex[0], rawIndex[1]);
     }
   };
 
@@ -799,8 +785,8 @@
 
   // Dialog exists as its own thing now
   $.GollumEditor.Dialog = $.GollumDialog;
-  $.GollumEditor.replaceSelection = function( repText ) {
-    FunctionBar.replaceFieldSelection( $('#gollum-editor-body'), repText );
+  $.GollumEditor.replaceSelection = function(repText) {
+    FunctionBar.replaceFieldSelection($('#gollum-editor-body'), repText);
   };
 
 })(jQuery);
