@@ -31,11 +31,6 @@ a {
   -webkit-border-radius: 1em;
 }
 
-.ff .gollum-editor,
-.ie .gollum-editor {
-  padding-bottom: 1em;
-}
-
 .gollum-editor .singleline {
   display: block;
   margin: 0 0 0.7em 0;
@@ -66,10 +61,6 @@ a {
 }
 
 .gollum-editor .gollum-editor-function-bar .gollum-editor-function-buttons {
-  display: none;
-}
-
-.gollum-editor .gollum-editor-function-bar.active .gollum-editor-function-buttons {
   display: block;
   float: left;
   overflow: hidden;
@@ -215,6 +206,7 @@ a.function-help:hover span { background-position: -405px -28px; }
 
 /* @section help */
 .gollum-editor-help {
+  display: none;
   margin: 0;
   overflow: hidden;
   padding: 0;

@@ -1,24 +1,3 @@
-/**
- *  Markdown Language Definition
- *
- *  A language definition for string manipulation operations, in this case
- *  for the Markdown, uh, markup language. Uses regexes for various functions
- *  by default. If regexes won't do and you need to do some serious
- *  manipulation, you can declare a function in the object instead.
- *
- *  Code example:
- *  'functionbar-id'  :   {
- *                          exec: function(text, selectedText) {
- *                                   functionStuffHere();
- *                                },
- *                          search: /somesearchregex/gi,
- *                          replace: 'replace text for RegExp.replace',
- *                          append: "just add this where the cursor is"
- *                         }
- *
-**/
-(function($) {
-
 var MarkDown = {
 
   'function-bold' :         {
@@ -204,9 +183,3 @@ var MarkDownHelp = [
               ]
   }
 ];
-
-
-$.GollumEditor.defineLanguage('markdown', MarkDown);
-$.GollumEditor.defineHelp('markdown', MarkDownHelp);
-
-})(jQuery);
