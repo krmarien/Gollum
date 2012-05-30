@@ -48,7 +48,7 @@
     	    functionbar.after('<div id="gollum-editor-help" class="gollum-editor-help"><ul id="gollum-editor-help-parent" class="gollum-editor-help-parent"><li></li></ul><ul id="gollum-editor-help-list" class="gollum-editor-help-list"><li></li></ul><div id="gollum-editor-help-wrapper" class="gollum-editor-help-wrapper"><div id="gollum-editor-help-content" class="gollum-editor-help-content"><p></p></div></div></div>');
     	           
 
-    	    $(this).GollumEditor();
+    	    wrapper.GollumEditor();
     		return this;
     	}
     };

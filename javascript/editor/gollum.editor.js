@@ -6,11 +6,8 @@
  *  $.GollumEditor(); on DOM ready.
  */
 (function($) {
-
-  // Editor options
   var defaults = {
     markupType: 'markdown',
-    hasFunctionBar: true,
   };
 
   /**
@@ -20,21 +17,12 @@
    */
   $.fn.GollumEditor = function(options) {
     var options = $.extend(defaults, options);
+    
     $(this).data('options', options);
 
-    if (EditorHas.baseEditorMarkup()) {
-      // Initialize the function bar by loading proper definitions
-      if (EditorHas.functionBar()) {
-        // load language definition
-        LanguageDefinition.setActiveLanguage(options.markupType);
-
-        if (EditorHas.help()) {
-          $('#gollum-editor-help').hide();
-        }
-      }
-      // EditorHas.functionBar
-    }
-    // EditorHas.baseEditorMarkup
+    LanguageDefinition.setActiveLanguage(options.markupType);
+    
+    $(this).find('.gollum-editor-help').hide();
   };
   
   $.GollumEditor = function () {};
@@ -50,15 +38,12 @@
     }
   };
 
-
-
   /**
    *  LanguageDefinition
    *  Language definition file handler
    *  Loads language definition files as necessary.
    */
   var LanguageDefinition = {
-
     _ACTIVE_LANG: '',
     _LOADED_LANGS: [],
     _LANG: {},
@@ -162,48 +147,6 @@
                typeof LanguageDefinition._LANG[LanguageDefinition._ACTIVE_LANG] ==
                'object');
     }
-
-  };
-
-
-  /**
-   *  EditorHas
-   *  Various conditionals to check what features of the Gollum Editor are
-   *  active/operational.
-   */
-  var EditorHas = {
-    /**
-     *  EditorHas.baseEditorMarkup
-     *  True if the basic editor form is in place.
-     *
-     *  @return boolean
-     */
-    baseEditorMarkup: function() {
-      return ($('#gollum-editor').length &&
-               $('#gollum-editor-body').length);
-    },
-
-    /**
-     *  EditorHas.functionBar
-     *  True if the Function Bar markup exists.
-     *
-     *  @return boolean
-     */
-    functionBar: function() {
-      return ($('#gollum-editor-body').data('options').hasFunctionBar &&
-               $('#gollum-editor-function-bar').length);
-    },
-
-    /**
-     *  EditorHas.help
-     *  True if the editor contains the inline help sector, false otherwise.
-     *
-     *  @return boolean
-     */
-    help: function() {
-      return ($('#gollum-editor #gollum-editor-help').length &&
-               $('#gollum-editor #function-help').length);
-    },
 
   };
 
@@ -417,7 +360,6 @@
       },
 
       refresh: function() {
-        if (EditorHas.functionBar()) {
           if (LanguageDefinition.isValid()) {
             $('#gollum-editor-function-bar a.function-button').unbind('click');
             FunctionBar.activate();
@@ -433,7 +375,6 @@
               Help.hide();
             }
           }
-        }
       },
 
 
