@@ -51,59 +51,62 @@ var LanguageDefinition = {
 
   'function-link'       :   {
                               exec: function( txt, selText, $field ) {
-                                var results = null;
-                                $.GollumEditor.Dialog.init({
-                                  title: 'Insert Link',
-                                  fields: [
-                                    {
-                                      id:   'text',
-                                      name: 'Link Text',
-                                      type: 'text',
-                                      defaultValue: selText
-                                    },
-                                    {
-                                      id:   'href',
-                                      name: 'URL',
-                                      type: 'text'
-                                    }
-                                  ],
-                                  OK: function( res ) {
-                                   var rep = '';
-                                   if ( res['text'] && res['href'] ) {
-                                      rep = '[' + res['text'] + '](' +
-                                             res['href'] + ')';
-                                    }
-                                    $field.gollum('replaceSelection', rep );
-                                  }
+                                var modal = $('<div>', {'class': 'modal fade'});
+                                modal.append(
+                                    $('<div>', {'class': 'modal-header'}).append(
+                                        $('<button>', {'class': 'close', 'data-dismiss': 'modal'}).html('&times;'),
+                                        $('<h3>').html('Insert Link')
+                                    ),
+                                    $('<div>', {'class': 'modal-body'}).append(
+                                        $('<h4>').html('Link Text'),
+                                        linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Link Text', 'value': selText}),
+                                        $('<h4>').html('URL'),
+                                        url = $('<input>', {'type': 'text', 'class': 'span5', 'placeholder': 'URL'})
+                                    ),
+                                    $('<div>', {'class': 'modal-footer'}).append(
+                                        $('<a>', {'class': 'btn', 'data-dismiss': 'modal'}).html('Close'),
+                                        ok = $('<a>', {'class': 'btn btn-primary'}).html('Insert')
+                                    )
+                                );
+                                $(document.body).append(modal);
+                                modal.modal()
+                                    .on('hidden', function () {
+                                      $(this).remove();
+                                    });
+                                ok.on('click', function () {
+                                    $field.gollum('replaceSelection', '[' + linkText.val() + '](' + url.val() + ')');
+                                    modal.modal('hide');
                                 });
                               }
                             },
 
   'function-image'      :   {
                               exec: function( txt, selText, $field ) {
-                                var results = null;
-                                $.GollumEditor.Dialog.init({
-                                  title: 'Insert Image',
-                                  fields: [
-                                    {
-                                      id: 'url',
-                                      name: 'Image URL',
-                                      type: 'text'
-                                    },
-                                    {
-                                      id: 'alt',
-                                      name: 'Alt Text',
-                                      type: 'text'
-                                    }
-                                  ],
-                                  OK: function( res ) {
-                                    var rep = '';
-                                    if ( res['url'] && res['alt'] ) {
-                                      rep = '![' + res['alt'] + ']' +
-                                            '(' + res['url'] + ')';
-                                    }
-                                    $field.gollum('replaceSelection', rep );
-                                  }
+                                var modal = $('<div>', {'class': 'modal fade'});
+                                modal.append(
+                                    $('<div>', {'class': 'modal-header'}).append(
+                                        $('<button>', {'class': 'close', 'data-dismiss': 'modal'}).html('&times;'),
+                                        $('<h3>').html('Insert Image')
+                                    ),
+                                    $('<div>', {'class': 'modal-body'}).append(
+                                        $('<h4>').html('Alternative Text'),
+                                        linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Alternative Text'}),
+                                        $('<h4>').html('Image URL'),
+                                        url = $('<input>', {'type': 'text', 'class': 'span5', 'placeholder': 'Image URL'})
+                                    ),
+                                    $('<div>', {'class': 'modal-footer'}).append(
+                                        $('<a>', {'class': 'btn', 'data-dismiss': 'modal'}).html('Close'),
+                                        ok = $('<a>', {'class': 'btn btn-primary'}).html('Insert')
+                                    )
+                                );
+                                $(document.body).append(modal);
+                                modal.modal()
+                                    .on('hidden', function () {
+                                      $(this).remove();
+                                    });
+                                ok.on('click', function () {
+                                    $field.gollum('replaceSelection', '![' + linkText.val() + '](' + url.val() + ')');
+                                    modal.modal('hide');
                                 });
                               }
                             }

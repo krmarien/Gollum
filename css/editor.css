@@ -8,17 +8,6 @@ a {
   outline: none !important;
 }
 
-.jaws {
-  /* JAWS should see it, but you can't */
-  display: block;
-  height: 1px;
-  left: -5000px;
-  overflow: hidden;
-  position: absolute;
-  top: -5000px;
-  width: 1px;
-}
-
 .gollum-editor {
   border: 1px solid #e4e4e4;
   background: #f9f9f9;

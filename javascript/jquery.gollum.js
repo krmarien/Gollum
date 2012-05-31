@@ -46,6 +46,7 @@
         options = $.extend(defaults, options);
             	    
 	    $that.data('gollum-editor', options)
+	        .addClass('gollum-editor-body')
 	        .wrap($('<div>', {'class': 'gollum-editor'}));
 
 	    var wrapper = $that.closest('.gollum-editor');

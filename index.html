@@ -5,24 +5,24 @@
     <title>GitHub Gollum</title>
     
     <link href="css/editor.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="css/dialog.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="css/template.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-    <form accept-charset="UTF-8" action="/LitusProject/Litus/wiki/Features" method="post" name="gollum-editor">
-        <textarea id="gollum-editor-body" class="gollum-editor-body"></textarea>
-        <input name="commit" title="Save current changes" type="submit" value="Save" />
+    <form action="" method="post">
+        <textarea id="editor"></textarea>
+        <input type="submit" value="Save" class="btn" />
     </form>
     
     <script type="text/javascript" src="javascript/jquery.js"></script>
     <script type="text/javascript" src="javascript/jquery.gollum.js"></script>
-    <script type="text/javascript" src="javascript/gollum.dialog.js"></script>
-    <script type="text/javascript" src="javascript/editor/langs/markdown.js"></script>
+    <script type="text/javascript" src="javascript/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascript/gollum.markdown.js"></script>
     
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#gollum-editor-body').gollum();
+            $('#editor').gollum();
         });
     </script>
 </body>
