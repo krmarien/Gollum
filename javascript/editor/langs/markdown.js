@@ -1,4 +1,4 @@
-var MarkDown = {
+var LanguageDefinition = {
 
   'function-bold' :         {
                               search: /([^\n]+)([\n\s]*)/g,
@@ -24,7 +24,6 @@ var MarkDown = {
                               replace: "* $1$2"
                             },
 
-  /* This looks silly but is completely valid Markdown */
   'function-ol'   :         {
                               search: /(.+)([\n]?)/g,
                               replace: "1. $1$2"
@@ -74,7 +73,7 @@ var MarkDown = {
                                       rep = '[' + res['text'] + '](' +
                                              res['href'] + ')';
                                     }
-                                    $.GollumEditor.replaceSelection( rep );
+                                    $field.gollum('replaceSelection', rep );
                                   }
                                 });
                               }
@@ -103,7 +102,7 @@ var MarkDown = {
                                       rep = '![' + res['alt'] + ']' +
                                             '(' + res['url'] + ')';
                                     }
-                                    $.GollumEditor.replaceSelection( rep );
+                                    $field.gollum('replaceSelection', rep );
                                   }
                                 });
                               }
@@ -111,7 +110,7 @@ var MarkDown = {
 
 };
 
-var MarkDownHelp = [
+var LanguageDefinitionHelp = [
 
   {
     menuName: 'Block Elements',

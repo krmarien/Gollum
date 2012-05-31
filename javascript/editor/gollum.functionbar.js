@@ -27,40 +27,32 @@
             var reselect = true;
             var cursor = null;
             
-            // execute a replacement function if one exists
             if (definitionObject.exec && typeof definitionObject.exec == 'function') {
                 definitionObject.exec(txt, selText, textarea);
                 return;
             }
             
-            // execute a search/replace if they exist
             var searchExp = /([^\n]+)/gi;
             if (definitionObject.search && typeof definitionObject.search == 'object') {
                 searchExp = null;
                 searchExp = new RegExp(definitionObject.search);
             }
-            // replace text
+
             if (definitionObject.replace && typeof definitionObject.replace == 'string') {
                 var rt = definitionObject.replace;
                 repText = repText.replace(searchExp, rt);
-                // remove backreferences
                 repText = repText.replace(/\$[\d]/g, '');
                 
                 if (repText === '') {
-                    // find position of $1 - this is where we will place the cursor
                     cursor = rt.indexOf('$1');
                     
-                    // we have an empty string, so just remove backreferences
                     repText = rt.replace(/\$[\d]/g, '');
                     
-                    // if the position of $1 doesn't exist, stick the cursor in
-                    // the middle
                     if (cursor == -1)
                         cursor = Math.floor(rt.length / 2);
                 }
             }
             
-            // append if necessary
             if (definitionObject.append && typeof definitionObject.append == 'string') {
                 if (repText == selText)
                     reselect = false;
@@ -88,9 +80,6 @@
                     start = stored_range.text.length - range.text.length;
                     end = start + range.text.length;
                     
-                    // so, uh, we're close, but we need to search for line breaks and
-                    // adjust the start/end points accordingly since IE counts them as
-                    // 2 characters in TextRange.
                     var s = start;
                     var lb = 0;
                     var i;
@@ -118,7 +107,7 @@
                     start: start,
                     end: end
                 };
-            } // end if ($field.length)
+            }
         }
         
         function getFieldSelection ($field) {
@@ -167,10 +156,8 @@
                 }
             }
             
-            if (scrollTop) {
-                // this jumps sometimes in FF
+            if (scrollTop)
                 $field[0].scrollTop = scrollTop;
-            }
         }
         
         function getDefinitionFor (attr) {
