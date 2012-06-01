@@ -28,8 +28,8 @@ session_start();
     <script type="text/javascript">
         $(document).ready(function () {
             $('#editor').gollum({
-                uploadURL: '/php/imageUpload.php',
-                progressURL: '/php/imageProgress.php',
+                uploadURL: '/php/fileUpload.php',
+                progressURL: '/php/fileProgress.php',
                 uploadProgressName: '<?= ini_get('session.upload_progress.name') ?>',
                 progressId: 1,
             });

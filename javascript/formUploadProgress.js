@@ -53,6 +53,8 @@
     
     function _load($this) {
         var settings = $this.data('formUploadProgress');
+        if (!settings)
+            return;
         
         $.post(settings.url, {upload_id: settings.name}, function (data) {
             if (!data)
