@@ -19,6 +19,10 @@
             "divider": "-",
             "help": ["help", "Help", "help"],
         },
+        uploadURL: '',
+        progressURL: '',
+        uploadProgressName: '',
+        progressId: 1,
     };
     
     var methods = {
@@ -93,6 +97,7 @@
     
     _executeAction = function ($that, definitionObject) {
         var txt = $that.val();
+        var options = $that.data('gollum-editor');
 
         var selPos = _getFieldSelectionPosition($that);
         var selText = _getFieldSelection($that);
@@ -101,7 +106,7 @@
         var cursor = null;
         
         if (definitionObject.exec && typeof definitionObject.exec == 'function') {
-            definitionObject.exec(txt, selText, $that);
+            definitionObject.exec(txt, selText, $that, options.uploadURL, options.progressURL, options.uploadProgressName, options.progressId);
             return;
         }
         

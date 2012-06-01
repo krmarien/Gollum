@@ -50,7 +50,7 @@ var LanguageDefinition = {
                             },
 
   'function-link'       :   {
-                              exec: function( txt, selText, $field ) {
+                              exec: function(txt, selText, $field, uploadURL, progressURL) {
                                 var modal = $('<div>', {'class': 'modal fade'});
                                 modal.append(
                                     $('<div>', {'class': 'modal-header'}).append(
@@ -81,7 +81,7 @@ var LanguageDefinition = {
                             },
 
   'function-image'      :   {
-                              exec: function( txt, selText, $field ) {
+                              exec: function(txt, selText, $field, uploadURL, progressURL, uploadProgressName, progressId) {
                                 var modal = $('<div>', {'class': 'modal fade'});
                                 modal.append(
                                     $('<div>', {'class': 'modal-header'}).append(
@@ -89,24 +89,52 @@ var LanguageDefinition = {
                                         $('<h3>').html('Insert Image')
                                     ),
                                     $('<div>', {'class': 'modal-body'}).append(
-                                        $('<h4>').html('Alternative Text'),
-                                        linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Alternative Text'}),
-                                        $('<h4>').html('Image URL'),
-                                        url = $('<input>', {'type': 'text', 'class': 'span5', 'placeholder': 'Image URL'})
+                                        form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
+                                            $('<h4>').html('Alternative Text'),
+                                            linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Alternative Text', 'name': 'linkText'}),
+                                            $('<h4>').html('Image URL'),
+                                            file = $('<input>', {'type': 'file', 'name': 'file'})
+                                        ),
+                                        progress = $('<div>', {'class': 'progress progress-striped active'}).append(
+                                            $('<div>', {'class': 'bar', 'style': 'width: 100%'})
+                                        )
                                     ),
-                                    $('<div>', {'class': 'modal-footer'}).append(
+                                    footer = $('<div>', {'class': 'modal-footer'}).append(
                                         $('<a>', {'class': 'btn', 'data-dismiss': 'modal'}).html('Close'),
                                         ok = $('<a>', {'class': 'btn btn-primary'}).html('Insert')
                                     )
                                 );
                                 $(document.body).append(modal);
+                                progress.hide();
+                                form.formUploadProgress({
+                                    url: progressURL,
+                                    name: progressId,
+                                    uploadProgressName: uploadProgressName,
+                                    interval: 1000,
+                                    onProgress: function (data) {
+                                        progress.find('.bar').width(((data.bytes_processed / data.content_length) * 100) + '%');
+                                    },
+                                    onSubmitted: function (data) {
+                                        $field.gollum('replaceSelection', '![' + linkText.val() + '](' + data.name + ')');
+                                        modal.modal('hide');
+                                    },
+                                    onSubmit: function () {
+                                        form.hide();
+                                        progress.show();
+                                        footer.find('.btn').hide();
+                                    },
+                                    onError: function () {
+                                        form.show();
+                                        progress.hide();
+                                        footer.find('.btn').show();
+                                    }
+                                });
                                 modal.modal()
                                     .on('hidden', function () {
                                       $(this).remove();
                                     });
                                 ok.on('click', function () {
-                                    $field.gollum('replaceSelection', '![' + linkText.val() + '](' + url.val() + ')');
-                                    modal.modal('hide');
+                                    form.submit();
                                 });
                               }
                             }
