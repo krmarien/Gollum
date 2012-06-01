@@ -59,6 +59,7 @@ var LanguageDefinition = {
                                     ),
                                     $('<div>', {'class': 'modal-body'}).append(
                                         form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
+                                            $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'file'}),
                                             $('<h4>').html('Link Text'),
                                             linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Link Text', 'name': 'linkText', 'value': selText}),
                                             $('<h4>').html('URL'),
@@ -132,10 +133,11 @@ var LanguageDefinition = {
                                     ),
                                     $('<div>', {'class': 'modal-body'}).append(
                                         form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
+                                            $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'image'}),
                                             $('<h4>').html('Alternative Text'),
                                             linkText = $('<input>', {'type': 'text', 'class': 'span4', 'placeholder': 'Alternative Text', 'name': 'linkText'}),
                                             $('<h4>').html('Image URL'),
-                                            file = $('<input>', {'type': 'file', 'name': 'file'})
+                                            file = $('<input>', {'type': 'file', 'name': 'file', 'accept': 'image/jpeg,image/png,image/gif'})
                                         ),
                                         progress = $('<div>', {'class': 'progress progress-striped active'}).append(
                                             $('<div>', {'class': 'bar', 'style': 'width: 100%'})
