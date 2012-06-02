@@ -9,7 +9,11 @@ session_start();
     
     <link href="css/editor.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="css/template.css" media="screen" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        body {
+            margin: 5px;
+        }
+    </style>
 </head>
 
 <body>
